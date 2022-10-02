@@ -1,0 +1,41 @@
+[workspace]
+members = ["sys"]
+
+[workspace.package]
+version = "0.1.0"
+authors = ["mona <mona@goingtobeamazing.dk>"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/monax3/DirectXTex-rs"
+
+[workspace.dependencies]
+windows = "0.42.0"
+
+[package]
+name = "directxtex"
+version = { workspace = true }
+edition = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+
+[dependencies]
+directxtex-sys = { path = "sys" }
+once_cell = { version = "1.15.0", optional = true }
+windows = { workspace = true, optional = true, features = [
+    "Win32_Foundation",
+    "Win32_System_Com",
+    "Win32_Graphics_Direct3D11",
+] }
+
+[dev-dependencies]
+windows = { workspace = true, features = ["Win32_Graphics_Dxgi_Common"] }
+
+[features]
+windows = ["dep:windows", "directxtex-sys/windows"]
+hwaccel = [
+    "windows",
+    "dep:once_cell",
+    "windows/Win32_Graphics_Dxgi",
+    "windows/Win32_Graphics_Direct3D",
+]
+default = [ "hwaccel" ]

@@ -1,0 +1,32 @@
+warn = [
+    "clippy::cargo",
+
+    "clippy::nursery",
+    "clippy::pedantic",
+    "clippy::suspicious",
+
+    # "clippy::missing_inline_in_public_items"
+]
+
+allow = [
+    "unsafe_code",
+
+    "clippy::multiple_crate_versions",
+
+    "clippy::needless_lifetimes",
+    "clippy::cast_possible_truncation",
+    "clippy::cast_precision_loss",
+    "clippy::cast_lossless",
+    "clippy::cast_sign_loss",
+
+    # Disable for release
+    "clippy::missing_safety_doc",
+    "clippy::missing_errors_doc",
+    "clippy::missing_panics_doc",
+    "clippy::cargo_common_metadata",
+
+    # Often worse for readability
+    "clippy::module_name_repetitions",
+    "clippy::option_if_let_else",
+    "clippy::similar_names",
+]

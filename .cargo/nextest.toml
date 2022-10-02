@@ -1,0 +1,5 @@
+[profile.default]
+test-threads = "num-cpus"
+failure-output = "final"
+success-output = "never"
+fail-fast = true
