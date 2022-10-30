@@ -14,7 +14,7 @@ fn generate_bindings(library: &Library, bindings_file: &Path) {
         .disable_name_namespacing()
         .derive_default(true)
         .derive_debug(true)
-        .default_enum_style(bindgen::EnumVariation::NewType { is_bitfield: false })
+        .default_enum_style(bindgen::EnumVariation::NewType { is_bitfield: false, is_global: false })
         .size_t_is_usize(true)
         .bitfield_enum("DirectX::.*_FLAGS")
         .no_debug("DirectX::TEX_DIMENSION")
