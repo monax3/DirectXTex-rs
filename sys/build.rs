@@ -1,3 +1,5 @@
+#![allow(clippy::expect_used)]
+
 use std::env;
 use std::path::Path;
 
@@ -6,6 +8,8 @@ use vcpkg::Library;
 fn generate_bindings(library: &Library, bindings_file: &Path) {
     let bindings = bindgen::builder()
         .header("wrapper/DirectXTexWrapper.hpp")
+        .use_core()
+        .ctypes_prefix("::core::ffi")
         .layout_tests(false)
         .disable_name_namespacing()
         .derive_default(true)
@@ -52,13 +56,15 @@ fn generate_bindings(library: &Library, bindings_file: &Path) {
         .generate()
         .expect("Failed to generate bindings");
 
-    bindings
-        .write_to_file(bindings_file)
-        .expect("Failed to write bindings");
+    // Replace void pointers in binding with u8 pointers to be more Rusty
+    let fixed_bindings = bindings.to_string().replace("::core::ffi::c_void", "u8");
+
+    std::fs::write(bindings_file, &fixed_bindings).expect("Failed to write bindings");
 }
 
 fn main() {
-    let bindings_file = Path::new(&env::var("OUT_DIR").unwrap()).join("bindings.rs");
+    let bindings_file =
+        Path::new(&env::var("OUT_DIR").expect("Failed to open OUT_DIR")).join("bindings.rs");
 
     let library = vcpkg::find_package("directxtex").expect("DirectXTex not found via vcpkg");
     generate_bindings(&library, &bindings_file);

@@ -38,4 +38,4 @@ hwaccel = [
     "windows/Win32_Graphics_Dxgi",
     "windows/Win32_Graphics_Direct3D",
 ]
-default = [ "hwaccel" ]
+default = ["hwaccel"]

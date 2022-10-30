@@ -1,43 +1,16 @@
 #[cfg(not(feature = "windows"))]
 mod compat {
     #[repr(C)]
-    pub struct GUID([u8; 0]);
-
-    #[repr(transparent)]
-    #[derive(Copy, Clone, PartialEq, Eq)]
-    pub struct HRESULT(pub i32);
-
-    impl HRESULT {
-        pub fn ok(self) -> std::result::Result<(), Self> {
-            match self.0 {
-                0 => Ok(()),
-                error => Err(HRESULT(error)),
-            }
-        }
+    #[derive(Clone, Copy, Default, PartialEq, Eq, Hash)]
+    pub struct GUID {
+        pub data1: u32,
+        pub data2: u16,
+        pub data3: u16,
+        pub data4: [u8; 8],
     }
 
-    impl From<std::convert::Infallible> for HRESULT {
-        fn from(_: std::convert::Infallible) -> Self { unimplemented!() }
-    }
-
-    impl std::error::Error for HRESULT {}
-
-    impl std::fmt::Debug for HRESULT {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "HRESULT({:08x})", self.0 as u32)
-        }
-    }
-
-    impl std::fmt::Display for HRESULT {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "HRESULT({:08x})", self.0 as u32)
-        }
-    }
-
-    #[derive(Default, Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    #[repr(transparent)]
-    pub struct DXGI_FORMAT(pub u32);
-
+    pub type HRESULT = i32;
+    pub type DXGI_FORMAT = u32;
     pub type D3D11_USAGE = u32;
 }
 #[cfg(not(feature = "windows"))] pub use compat::{D3D11_USAGE, DXGI_FORMAT, GUID, HRESULT};

@@ -3,6 +3,7 @@
 
 use directxtex_sys::{self as sys, CP_FLAGS, DXGI_FORMAT};
 
+use crate::error::hresult;
 use crate::Result;
 
 #[inline]
@@ -89,7 +90,7 @@ pub fn compute_pitch(
     let mut row_pitch: usize = 0;
     let mut slice_pitch: usize = 0;
 
-    unsafe {
+    hresult(unsafe {
         sys::ComputePitch(
             format,
             width,
@@ -98,8 +99,7 @@ pub fn compute_pitch(
             &mut slice_pitch,
             cp_flags,
         )
-    }
-    .ok()
+    })
     .map(|_| (row_pitch, slice_pitch))
 }
 
@@ -119,7 +119,7 @@ pub fn expected_buffer(
 ) -> Result<usize> {
     let mut raw = sys::ScratchImage::default();
 
-    unsafe {
+    hresult(unsafe {
         raw.Initialize2D(
             format,
             width,
@@ -128,8 +128,7 @@ pub fn expected_buffer(
             mipmaps,
             CP_FLAGS::default(),
         )
-    }
-    .ok()
+    })
     // Make sure our temporary ScratchImage has its drop handler
     .map(|_| crate::ScratchImage(raw))
     // ...and return only buffer size that was allocated in it

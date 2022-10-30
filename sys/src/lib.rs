@@ -1,3 +1,4 @@
+#![cfg_attr(not(feature = "windows"), no_std)]
 #![allow(unsafe_code)]
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
@@ -11,6 +12,8 @@
 #![allow(clippy::too_many_lines)]
 #![allow(clippy::use_self)]
 #![allow(clippy::transmute_ptr_to_ptr)]
+#![deny(clippy::std_instead_of_core)]
+#![deny(clippy::std_instead_of_alloc)]
 
 mod impls;
 mod types;
