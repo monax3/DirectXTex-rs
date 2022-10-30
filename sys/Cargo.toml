@@ -3,7 +3,10 @@ name = "directxtex-sys"
 description = "Dynamically generated (bindgen) bindings to Microsoft's DirectXTex library via vcpkg"
 version = { workspace = true }
 edition = { workspace = true }
+license = { workspace = true }
 repository = { workspace = true }
+categories = { workspace = true }
+keywords = { workspace = true }
 
 [dependencies]
 windows = { workspace = true, optional = true, features = [
@@ -15,7 +18,7 @@ windows = { workspace = true, optional = true, features = [
 [build-dependencies]
 vcpkg = { version = "0.2.15", default-features = false }
 cc = "1"
-bindgen = { version = "0.60.1", default-features = false }
+bindgen = { version = "0.61.0", default-features = false }
 
 [dev-dependencies]
 windows = { workspace = true, features = [

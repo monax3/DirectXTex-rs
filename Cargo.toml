@@ -3,13 +3,15 @@ members = ["sys"]
 
 [workspace.package]
 version = "0.1.0"
-authors = ["mona <mona@goingtobeamazing.dk>"]
+authors = ["mona"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/monax3/DirectXTex-rs"
+categories = ["graphics", "game-development", "external-ffi-bindings"]
+keywords = ["directxtex", "dxt", "textures", "bc1", "bc3", "bc5", "bc6", "bc7"]
 
 [workspace.dependencies]
-windows = "0.42.0"
+windows = "0.43.0"
 
 [package]
 name = "directxtex"
@@ -17,6 +19,8 @@ version = { workspace = true }
 edition = { workspace = true }
 license = { workspace = true }
 repository = { workspace = true }
+categories = { workspace = true }
+keywords = { workspace = true }
 
 [dependencies]
 directxtex-sys = { path = "sys" }
