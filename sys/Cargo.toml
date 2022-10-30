@@ -1,6 +1,6 @@
 [package]
 name = "directxtex-sys"
-description = "Dynamically generated (bindgen) bindings to Microsoft's DirectXTex library via vcpkg"
+description = "Generated (bindgen) bindings to Microsoft's DirectXTex library via vcpkg"
 version = { workspace = true }
 edition = { workspace = true }
 license = { workspace = true }
