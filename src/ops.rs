@@ -33,10 +33,10 @@ pub fn compress_with_device(
     to_format: sys::DXGI_FORMAT,
     flags: TEX_COMPRESS_FLAGS,
 ) -> Result<ScratchImage> {
-    use windows::core::Vtable;
+    use windows::core::{Interface};
 
     unsafe {
-        let device: *mut sys::ID3D11Device = device.as_raw().cast::<sys::ID3D11Device>();
+        let device: *mut sys::ID3D11Device = device.as_raw() as *mut sys::ID3D11Device;
         compress_with_device_ptr(device, images, metadata, to_format, flags)
     }
 }

@@ -6,6 +6,6 @@ pub use windows::core::{Error, Result};
 pub fn invalid_arg() -> Error { E_INVALIDARG.into() }
 pub fn fail() -> Error { E_FAIL.into() }
 
-pub const fn hresult(hr: windows::core::HRESULT) -> Result<()> {
+pub fn hresult(hr: windows::core::HRESULT) -> Result<()> {
     hr.ok()
 }

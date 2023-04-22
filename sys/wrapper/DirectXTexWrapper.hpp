@@ -127,4 +127,7 @@ namespace Wrapper
                                              _In_z_ const wchar_t *szFile, _In_opt_ const TexMetadata *metadata) noexcept;
 
     extern "C" bool __cdecl IsBGR(_In_ DXGI_FORMAT fmt) noexcept;
+    extern "C" bool __cdecl IsSRGB(_In_ DXGI_FORMAT fmt) noexcept;
+    extern "C" bool __cdecl IsPalettized(_In_ DXGI_FORMAT fmt) noexcept;
+    extern "C" bool __cdecl IsCompressed(_In_ DXGI_FORMAT fmt) noexcept;
 }

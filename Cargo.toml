@@ -21,11 +21,11 @@ categories = ["graphics", "game-development", "external-ffi-bindings"]
 keywords = ["directxtex", "dxt", "textures", "bc1", "bc3", "bc5", "bc6", "bc7"]
 
 [workspace.dependencies]
-windows = "0.43.0"
+windows = "0.48.0"
 
 [dependencies]
 directxtex-sys = { path = "sys" }
-once_cell = { version = "1.15.0", optional = true }
+once_cell = { version = "1.17.1", optional = true }
 windows = { workspace = true, optional = true, features = [
     "Win32_Foundation",
     "Win32_System_Com",

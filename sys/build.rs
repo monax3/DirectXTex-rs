@@ -6,6 +6,7 @@ use std::path::Path;
 use vcpkg::Library;
 
 fn generate_bindings(library: &Library, bindings_file: &Path) {
+    println!("cargo:print={:?}", library.include_paths);
     let bindings = bindgen::builder()
         .header("wrapper/DirectXTexWrapper.hpp")
         .use_core()
@@ -47,11 +48,12 @@ fn generate_bindings(library: &Library, bindings_file: &Path) {
         .blocklist_function("DirectX::SaveToWICFile")
         .blocklist_function("DirectX::EvaluateImage")
         .blocklist_function("DirectX::TransformImage")
+        .clang_args(["-x", "c++"])
         .clang_args(
             library
                 .include_paths
                 .iter()
-                .map(|inc| format!("-I{}", inc.display())),
+                .map(|inc| ["-I".to_string(), format!("{}", inc.display())]).flatten(),
         )
         .generate()
         .expect("Failed to generate bindings");

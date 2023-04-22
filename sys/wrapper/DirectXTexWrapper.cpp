@@ -258,4 +258,19 @@ namespace Wrapper
     {
         return DirectX::IsBGR(fmt);
     }
+
+    extern "C" bool __cdecl IsSRGB(_In_ DXGI_FORMAT fmt) noexcept
+    {
+        return DirectX::IsSRGB(fmt);
+    }
+
+    extern "C" bool __cdecl IsPalettized(_In_ DXGI_FORMAT fmt) noexcept
+    {
+        return DirectX::IsPalettized(fmt);
+    }
+
+    extern "C" bool __cdecl IsCompressed(_In_ DXGI_FORMAT fmt) noexcept
+    {
+        return DirectX::IsCompressed(fmt);
+    }
 }
