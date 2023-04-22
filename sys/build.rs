@@ -78,7 +78,6 @@ fn main() {
         .cpp(true)
         .includes(library.include_paths)
         .file("wrapper/DirectXTexWrapper.cpp")
-        .static_crt(true)
         .warnings(true)
         .compile("DirectXTexWrapper");
 }
