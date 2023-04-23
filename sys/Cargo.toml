@@ -8,6 +8,7 @@ license = { workspace = true }
 repository = { workspace = true }
 categories = { workspace = true }
 keywords = { workspace = true }
+links = "DirectXTex"
 
 [dependencies]
 windows = { workspace = true, optional = true, features = [
@@ -20,7 +21,6 @@ windows = { workspace = true, optional = true, features = [
 vcpkg = { version = "0.2.15", default-features = false }
 cc = "1"
 bindgen = "0.65.1"
-#bindgen = { version = "0.65.1", default-features = false }
 
 [dev-dependencies]
 windows = { workspace = true, features = [

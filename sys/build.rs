@@ -15,7 +15,10 @@ fn generate_bindings(library: &Library, bindings_file: &Path) {
         .disable_name_namespacing()
         .derive_default(true)
         .derive_debug(true)
-        .default_enum_style(bindgen::EnumVariation::NewType { is_bitfield: false, is_global: false })
+        .default_enum_style(bindgen::EnumVariation::NewType {
+            is_bitfield: false,
+            is_global:   false,
+        })
         .size_t_is_usize(true)
         .bitfield_enum("DirectX::.*_FLAGS")
         .no_debug("DirectX::TEX_DIMENSION")
@@ -48,12 +51,14 @@ fn generate_bindings(library: &Library, bindings_file: &Path) {
         .blocklist_function("DirectX::SaveToWICFile")
         .blocklist_function("DirectX::EvaluateImage")
         .blocklist_function("DirectX::TransformImage")
+        // .allowlist_type("DXGI_FORMAT")
         .clang_args(["-x", "c++"])
         .clang_args(
             library
                 .include_paths
                 .iter()
-                .map(|inc| ["-I".to_string(), format!("{}", inc.display())]).flatten(),
+                .map(|inc| ["-I".to_string(), format!("{}", inc.display())])
+                .flatten(),
         )
         .generate()
         .expect("Failed to generate bindings");
@@ -64,6 +69,16 @@ fn generate_bindings(library: &Library, bindings_file: &Path) {
     std::fs::write(bindings_file, &fixed_bindings).expect("Failed to write bindings");
 }
 
+fn check_for_header(library: &Library, header: &str) -> bool {
+    for path in &library.include_paths {
+        let header_file = path.join(header);
+        if header_file.is_file() {
+            return true;
+        }
+    }
+    false
+}
+
 fn main() {
     let bindings_file =
         Path::new(&env::var("OUT_DIR").expect("Failed to open OUT_DIR")).join("bindings.rs");
@@ -71,13 +86,39 @@ fn main() {
     let library = vcpkg::find_package("directxtex").expect("DirectXTex not found via vcpkg");
     generate_bindings(&library, &bindings_file);
 
+    if !check_for_header(&library, "DirectXTex.h") {
+        println!(
+            "cargo:warning=DirectXTex.h not found in include paths, compilation will most likely \
+             fail"
+        );
+    }
+    if !check_for_header(&library, "DirectXTexEXR.h") {
+        println!(
+            "cargo:warning=DirectXTexEXR.h not found in include paths, ensure DirectXTex is \
+             installed with EXR support"
+        );
+    }
+
     #[cfg(windows)]
     println!("cargo:rustc-link-lib=ole32");
 
-    cc::Build::new()
-        .cpp(true)
+    let mut cc = cc::Build::new();
+
+    if cc.get_compiler().is_like_clang() && std::env::var_os("CARGO_CFG_WINDOWS").is_some() {
+        if std::env::var("CARGO_CFG_TARGET_FEATURE").map_or(false, |features| features.contains("crt-static"))
+        {
+            println!("cargo:warning=Setting static VC runtime");
+            cc.flag("-fms-runtime-lib=static");
+        } else {
+            println!("cargo:warning=Setting dynamic VC runtime");
+            cc.flag("-fms-runtime-lib=dll");
+        }
+    }
+
+    cc.cpp(true)
         .includes(library.include_paths)
         .file("wrapper/DirectXTexWrapper.cpp")
+        .debug(false)
         .warnings(true)
         .compile("DirectXTexWrapper");
 }
