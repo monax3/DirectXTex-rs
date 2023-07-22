@@ -51,6 +51,7 @@ fn generate_bindings(library: &Library, bindings_file: &Path) {
         .blocklist_function("DirectX::SaveToWICFile")
         .blocklist_function("DirectX::EvaluateImage")
         .blocklist_function("DirectX::TransformImage")
+        .generate_cstr(true)
         // .allowlist_type("DXGI_FORMAT")
         .clang_args(["-x", "c++"])
         .clang_args(
